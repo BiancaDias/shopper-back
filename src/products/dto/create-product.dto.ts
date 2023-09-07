@@ -1,15 +1,14 @@
-import { IsArray, IsNotEmpty, IsNumber, ValidateNested } from "class-validator"
+import { IsArray, IsDecimal, IsNotEmpty, IsNumber, IsObject, ValidateNested } from "class-validator"
 import { Type } from 'class-transformer';
 
-export class ProductDto {
+class ProductDto {
 
   @IsNumber()
   @IsNotEmpty()
   product_code: number
 
-  @IsNumber()
   @IsNotEmpty()
-  new_price: number
+  new_price: number;
 
 }
 
