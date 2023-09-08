@@ -37,18 +37,23 @@ export class ProductsService {
       }
     }
     if(ruleErrors.length > 0){
-      return ruleErrors;
+      return {error: ruleErrors};
     }
-    return ruleOk;   
+    return {ok: ruleOk};   
   }
 
   async update(productDto: ProductArrayDto) {
+
     for(const produtcs of productDto.products){
+
       const decimalValue = new Decimal(produtcs.new_price)
       const productUpdate = await this.respository.updateProduct(produtcs.product_code, decimalValue)
       console.log(productUpdate.packs_packs_product_idToproducts)
+
       if(productUpdate.packs_packs_product_idToproducts.length > 0){
+
         console.log("aqui se trata de um produto associado a pacotes")
+        
         if(productUpdate.packs_packs_product_idToproducts.length === 1){
           const code = Number(productUpdate.packs_packs_product_idToproducts[0].pack_id);
           const newPackPrice = new Decimal(Number(productUpdate.packs_packs_product_idToproducts[0].qty) * produtcs.new_price)
