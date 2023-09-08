@@ -1,7 +1,6 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ProductArrayDto } from './dto/create-product.dto';
 import { ProductsRepository } from './products.repository';
-import { Prisma } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
 
 @Injectable()
@@ -14,7 +13,7 @@ export class ProductsService {
     const ruleOk = [];
     for( const product of productDto.products ){
       const productDb = await this.respository.check(product.product_code);
-      console.log(productDb)
+
       if(!productDb){
         ruleErrors.push({product_code: product.product_code, error: "Produto não encontrado"})
       }else{
@@ -48,15 +47,12 @@ export class ProductsService {
 
       const decimalValue = new Decimal(produtcs.new_price)
       const productUpdate = await this.respository.updateProduct(produtcs.product_code, decimalValue)
-      console.log(productUpdate.packs_packs_product_idToproducts)
 
       if(productUpdate.packs_packs_product_idToproducts.length > 0){
 
         if(productUpdate.packs_packs_product_idToproducts.length === 1){
           const code = Number(productUpdate.packs_packs_product_idToproducts[0].pack_id);
           const newPackPrice = new Decimal(Number(productUpdate.packs_packs_product_idToproducts[0].qty) * produtcs.new_price)
-          console.log(code)
-          console.log(newPackPrice)
           await this.respository.updateProduct(code, newPackPrice);
         }
       }
