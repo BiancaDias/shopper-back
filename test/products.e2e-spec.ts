@@ -103,4 +103,17 @@ describe('Products (e2e)', () => {
         ]
       })
   });
+
+  it("PUT /products => It should return with 200 and the Ok message.", async () =>{
+    const productFactory = new ProductFactory(prisma);
+
+    await productFactory.createProducts()
+
+    const products =  E2EUtils.createFileValid()
+    return request(app.getHttpServer())
+      .put('/products')
+      .send(products)
+      .expect(HttpStatus.OK)
+      .expect({ message: 'Update products - ok!' })
+  });
 });

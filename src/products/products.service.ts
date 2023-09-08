@@ -52,33 +52,25 @@ export class ProductsService {
 
       if(productUpdate.packs_packs_product_idToproducts.length > 0){
 
-        console.log("aqui se trata de um produto associado a pacotes")
-        
         if(productUpdate.packs_packs_product_idToproducts.length === 1){
           const code = Number(productUpdate.packs_packs_product_idToproducts[0].pack_id);
           const newPackPrice = new Decimal(Number(productUpdate.packs_packs_product_idToproducts[0].qty) * produtcs.new_price)
           console.log(code)
           console.log(newPackPrice)
           await this.respository.updateProduct(code, newPackPrice);
-        }else{
-          console.log("metodo não implementado")
         }
       }
-      console.log(productUpdate.packs_packs_pack_idToproducts)
       if((productUpdate.packs_packs_pack_idToproducts.length>0)){
-        console.log("aqui se trata de um pacote associado a produtos")
+
         if((productUpdate.packs_packs_pack_idToproducts.length===1)){
 
           const individualPrice = new Decimal(produtcs.new_price / Number(productUpdate.packs_packs_pack_idToproducts[0].qty))
 
           await this.respository.updateProduct(Number(productUpdate.packs_packs_pack_idToproducts[0].product_id), individualPrice)
-        }else{
-          console.log("Método não implementado")
-        }
-
-          
+        }          
       }
     }
+    return {message: "Update products - ok!"}
   }
 
 }
